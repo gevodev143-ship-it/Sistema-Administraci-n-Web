@@ -1,0 +1,45 @@
+producto.service.js
+    - listarProductoPaginacion      // lista solo 500 registros por pagina (haci no se hace lento la pagina)
+    - listarProducto                // lista todos los registros de la tabla producto
+    - obtenerProductoPorId         
+    - actualizarProductoPorId       
+    - eliminarProductoPorId
+    - eliminarImagenProducto
+    - subirImagenProducto
+    - getImagenProducto
+    - buscarProductosPorNombre
+
+categoria.service.js
+    - listarCategoriaPaginacion
+    - listarCategoria
+    - obtenerCategoriaPorId
+    - actualizarCategoriaPorId
+    - eliminarCategoriaPorId
+    - eliminarImagenCategoria
+    - subirImagenCategoria
+    - getImagenCategoria
+    - buscarCategoriaPorNombre
+
+marca.service.js
+    - listarMarcaPaginacion
+    - listarMarca
+    - obtenerMarcaPorId
+    - actualizarMarcaPorId
+    - eliminarMarcaPorId
+    - eliminarImagenMarca
+    - subirImagenMarca
+    - getImagenMarca
+    - buscarMarcaPorNombre
+
+storage.service.js
+    - 
+
+export.service.js
+    - 
+
+importarExcelBd.service.service.js
+    - 
+
+usuario.service.service.js
+    - 
+

@@ -1,0 +1,4 @@
+route:
+👉 Define la URL que el usuario va a llamar
+👉 Conecta esa URL con un controller
+👉 NO hace lógica, solo “dirige el tráfico”

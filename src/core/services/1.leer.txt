@@ -1,0 +1,30 @@
+producto.service.ts
+    - listarProductoPaginacion
+    - listarProducto
+    - obtenerProductoPorId
+    - actualizarProductoPorId
+    - eliminarProductoPorId
+    - eliminarImagenProducto
+    - subirImagenProducto
+    - getImagenProducto
+    - buscarProductosPorNombre
+
+categoria.service.ts
+    - listarCategoriasPaginacion
+    - listarCategorias
+    - obtenerCategoriaPorId      
+    - actualizarCategoriaPorId   
+    - eliminarCategoriaPorId     
+    - eliminarImagenCategoria    
+    - subirImagenCategoria       
+    - getImagenCategoria    
+
+marca.service.ts
+    - listarMarcasPaginacion
+    - listarMarcas
+    - obtenerMarcaPorId      
+    - actualizarMarcaPorId   
+    - eliminarMarcaPorId     
+    - eliminarImagenMarca    
+    - subirImagenMarca       
+    - getImagenMarca   

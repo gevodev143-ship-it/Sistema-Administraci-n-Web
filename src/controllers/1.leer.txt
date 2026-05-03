@@ -1,0 +1,4 @@
+controller:
+👉 recibe la petición del frontend
+👉 decide qué hacer
+👉 devuelve la respuesta

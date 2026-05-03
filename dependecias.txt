@@ -1,0 +1,7 @@
+npm install json2csv   
+npm install archiver node-fetch
+npm install archiver node-fetch json2csv
+npm install node-fetch
+npm install @supabase/supabase-js
+npm install multer
+npm install xlsx

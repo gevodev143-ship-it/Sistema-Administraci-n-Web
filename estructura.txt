@@ -1,0 +1,33 @@
+src/
+│
+├── config/
+│   └── supabase.js
+│
+├── controllers/
+│   └── producto.controller.js
+│   └── categoria.controller.js
+│   └── marca.controller.js
+|   └── storage.controller.js
+│
+├── routes/
+│   └── producto.routes.js
+│   └── categoria.routes.js
+│   └── marca.routes.js
+|   └── storage.routes.js
+│
+├── services/
+|   └── producto.service.js
+|   └── categoria.service.js
+|   └── marca.service.js
+|   └── storage.service.js
+|   └── export.service.js
+|   └── importarExcelBd.service.js
+|   └── usuario.service.js
+|
+├── utils/
+│   └── convertToWebp.ts   
+│   └── convertToCsv.js   
+│
+|── app.js
+
+─── server.js
