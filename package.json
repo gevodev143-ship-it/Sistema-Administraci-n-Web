@@ -1,5 +1,5 @@
 {
-      "name": "Interfaz de Control de Inventario",
+      "name": "interfaz_de_control_de_inventario",
       "version": "0.1.0",
       "private": true,
       "dependencies": {
