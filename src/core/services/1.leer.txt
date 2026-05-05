@@ -28,3 +28,6 @@ marca.service.ts
     - eliminarImagenMarca    
     - subirImagenMarca       
     - getImagenMarca   
+
+apiConfig.ts
+    - lo unico que hace es hacer menor largo las llamadas al backend 

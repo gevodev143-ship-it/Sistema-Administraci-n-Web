@@ -106,35 +106,45 @@ const [previewProducto, setPreviewProducto] = useState<string | null>(null);
   // -------------------------------------------------------------------------------------------------------
   const [busquedaMarca, setBusquedaMarca] = useState(""); //esto es para el modal de marca , para que filtr las marcas cuando escriba en la caja 
   const [marcaId, setMarcaId] = useState<number | null>(null);
-  const [imagenesMarca, setImagenesMarca] = useState<string[]>([]);
+  const [imagenesMarca, setImagenesMarca] = useState<{
+  id: number;
+  nombre: string;
+  url: string | null;
+}[]>([]);
   const [openModalMarca, setOpenModalMarca] = useState(false);
   const [previewMarca, setPreviewMarca] = useState<string | null>(null);
 
   const listarImgMarca = async () => {
-    const { data, error } = await supabase
-      .storage
-      .from("imagenes")
-      .list("marca");
+  const { data, error } = await supabase
+    .from("marca")
+    .select("marcaid, marcaimgnombre, marcaimgnombrebucket");
 
-    if (error) {
-      console.error(error);
-      return;
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const marcas = data.map((item) => {
+    let url = null;
+
+    if (item.marcaimgnombrebucket) {
+      const { data: urlData } = supabase.storage
+        .from("imagenes")
+        .getPublicUrl(`marca/${item.marcaimgnombrebucket}`);
+
+      url = urlData.publicUrl;
     }
 
-    const urls = data
-      .filter(file => file.name !== ".emptyFolderPlaceholder") // 👈 IMPORTANTE
-      .map((file) => {
-        const { data: urlData } = supabase
-          .storage
-          .from("imagenes")
-          .getPublicUrl(`marca/${file.name}`);
+    return {
+      id: item.marcaid,
+      nombre: item.marcaimgnombre,
+      url: url,
+    };
+  });
 
-        return urlData.publicUrl;
-      });
-
-    setImagenesMarca(urls);
-    setOpenModalMarca(true);
-  };
+  setImagenesMarca(marcas);
+  setOpenModalMarca(true);
+};
 // -------------------------------------------------Insertar Producto--------------------------------------------
 const [categoriaId, setCategoriaId] = useState<number | null>(null);
   const [fileProducto, setFileProducto] = useState<File | null>(null);
@@ -597,37 +607,52 @@ const handlePreviewMarca = (e: React.ChangeEvent<HTMLInputElement>) => {
       )}
       {/* ------------------------------------------------------------------------------------- */}
       {openModalMarca && (
-        <div 
-          className={styles.ProductoModaCategoriaOverlay}
-          onClick={() => setOpenModalMarca(false)}
-        >
-          <div 
-            className={styles.ProductoModaCategoria}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <b><h2>Selecciona una marca</h2></b>
-            <input 
-              type="text" 
-              placeholder="Buscar marca..."
-              value={busquedaMarca}
-              onChange={(e) => setBusquedaMarca(e.target.value)}
-            />
-            <div className={styles.gridCategoria}>
-              {imagenesMarca.map((img, i) => (
-                <img 
-                  key={i} 
-                  src={img}
-                  onClick={() => {
-                    setPreviewMarca(img);
-                    setMarcaId(i); // ⚠️ por ahora usas index (mejor luego BD)
-                    setOpenModalMarca(false);
-                  }}
-                />
-              ))}
+  <div 
+    className={styles.ProductoModaCategoriaOverlay}
+    onClick={() => setOpenModalMarca(false)}
+  >
+    <div 
+      className={styles.ProductoModaCategoria}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h3>Selecciona una marca</h3>
+
+      <input 
+        type="text" 
+        placeholder="Buscar marca..."
+        value={busquedaMarca}
+        onChange={(e) => setBusquedaMarca(e.target.value)}
+      />
+
+      <div className={styles.gridCategoria}>
+        {imagenesMarca
+          .filter(item =>
+            item.nombre
+              ?.toLowerCase()
+              .includes(busquedaMarca.toLowerCase())
+          )
+          .map((item) => (
+            <div
+              key={item.id}
+              onClick={() => {
+                setPreviewMarca(item.url);
+                setMarcaId(item.id); // ✅ ahora usas el ID real de la BD
+                setOpenModalMarca(false);
+              }}
+            >
+              {item.url ? (
+                <img src={item.url} />
+              ) : (
+                <div className={styles.sinImagen}>
+                  {item.nombre}
+                </div>
+              )}
             </div>
-          </div>
-        </div>
-      )}
+          ))}
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 } 
