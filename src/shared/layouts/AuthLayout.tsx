@@ -4,4 +4,4 @@ export default function AuthLayout() {
     return (
         <Outlet />
     );
-}
+}   

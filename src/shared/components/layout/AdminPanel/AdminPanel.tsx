@@ -136,7 +136,7 @@ function ImportSection({
       console.error(error);
       alert("Error al importar");
     } finally {
-      setLoading(false);
+      setLoading(false);  
     }
   };
 

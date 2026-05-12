@@ -3,16 +3,16 @@ import { supabase } from "../../../../lib/supabase";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface Banner {
-  bannerId: number;
-  bannerNombre: string | null;
-  bannerLink: string | null;
-  bannerBucketNombre: string | null;
+  bannerid: number;
+  bannernombre: string | null;
+  bannerlink: string | null;
+  bannerbucketnombre: string | null;
 }
 
 interface Seccion1Item {
-  sc1Id: number;
-  sc1UsarStorage: boolean;
-  bannerId: number | null;
+  sc1id: number;
+  sc1usarstorage: boolean;
+  bannerid: number | null;
   banner: Banner | null;
 }
 
@@ -65,11 +65,11 @@ function BannerCard({
   onEdit: (item: Seccion1Item) => void;
 }) {
   const banner = item.banner;
-  const imageUrl = banner?.bannerBucketNombre
-    ? getPublicUrl(banner.bannerBucketNombre)
-    : banner?.bannerLink ?? null;
+  const imageUrl = banner?.bannerbucketnombre
+    ? getPublicUrl(banner.bannerbucketnombre)
+    : banner?.bannerlink ?? null;
 
-  const label = banner?.bannerNombre ?? banner?.bannerLink ?? "Sin nombre";
+  const label = banner?.bannernombre ?? banner?.bannerlink ?? "Sin nombre";
 
   return (
     <div className="banner-card" onClick={() => onEdit(item)}>
@@ -119,7 +119,7 @@ function SectionGroup({
       ) : (
         <div className="banner-grid">
           {items.map((item) => (
-            <BannerCard key={item.sc1Id} item={item} onEdit={onEdit} />
+            <BannerCard key={item.sc1id} item={item} onEdit={onEdit} />
           ))}
         </div>
       )}
@@ -148,19 +148,19 @@ function BannerModal({
   const isEdit = state.mode === "edit";
   const banner = state.item?.banner ?? null;
   const [usarStorage, setUsarStorage] = useState<boolean>(
-    state.item?.sc1UsarStorage ?? true
+    state.item?.sc1usarstorage ?? true
   );
   const [previewUrl, setPreviewUrl] = useState<string | null>(
-    isEdit && banner?.bannerBucketNombre
-      ? getPublicUrl(banner.bannerBucketNombre)
-      : isEdit && banner?.bannerLink
-      ? banner.bannerLink
+    isEdit && banner?.bannerbucketnombre
+      ? getPublicUrl(banner.bannerbucketnombre)
+      : isEdit && banner?.bannerlink
+      ? banner.bannerlink
       : null
   );
   const [webpBlob, setWebpBlob] = useState<Blob | null>(null);
   const [newFileName, setNewFileName] = useState<string>("");
-  const [nombre, setNombre] = useState<string>(banner?.bannerNombre ?? "");
-  const [link, setLink] = useState<string>(banner?.bannerLink ?? "");
+  const [nombre, setNombre] = useState<string>(banner?.bannernombre ?? "");
+  const [link, setLink] = useState<string>(banner?.bannerlink ?? "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -191,7 +191,7 @@ function BannerModal({
 
     setLoading(true);
     try {
-      let bucketNombre: string | null = banner?.bannerBucketNombre ?? null;
+      let bucketNombre: string | null = banner?.bannerbucketnombre ?? null;
 
       // Upload new image if provided
       if (webpBlob && newFileName) {
@@ -200,7 +200,7 @@ function BannerModal({
 
         // Check duplicate bucket names (exclude current)
         const isDuplicate = existingBucketNames
-          .filter((n) => n !== (banner?.bannerBucketNombre ? stripExtension(banner.bannerBucketNombre) : null))
+          .filter((n) => n !== (banner?.bannerbucketnombre ? stripExtension(banner.bannerbucketnombre) : null))
           .includes(nameNoExt);
 
         if (isDuplicate) {
@@ -223,18 +223,18 @@ function BannerModal({
 
       if (isEdit && banner) {
         // 1. Actualizar banner
-        const updates: Partial<Banner> = { bannerNombre: nombre.trim() };
+        const updates: Partial<Banner> = { bannernombre: nombre.trim() };
 
         if (webpBlob) {
-          updates.bannerBucketNombre = bucketNombre;
+          updates.bannerbucketnombre = bucketNombre;
         }
 
-        if (link.trim() !== "") updates.bannerLink = link.trim();
+        if (link.trim() !== "") updates.bannerlink = link.trim();
 
         const { error: upErr } = await supabase
           .from("banner")
           .update(updates)
-          .eq("bannerId", banner.bannerId);
+          .eq("bannerId", banner.bannerid);
 
         if (upErr) throw upErr;
 
@@ -244,7 +244,7 @@ function BannerModal({
           .update({
             sc1UsarStorage: usarStorage,
           })
-          .eq("sc1Id", state.item?.sc1Id);
+          .eq("sc1id", state.item?.sc1id);
 
         if (sc1UpdateErr) throw sc1UpdateErr;
       }else {
@@ -372,14 +372,14 @@ export default function Seccion1() {
     const { data, error } = await supabase
       .from("seccion1")
       .select(`
-        sc1Id,
-        sc1UsarStorage,
-        bannerId,
+        sc1id,
+        sc1usarstorage,
+        bannerid,
         banner (
-          bannerId,
-          bannerNombre,
-          bannerLink,
-          bannerBucketNombre
+          bannerid,
+          bannernombre,
+          bannerlink,
+          bannerbucketnombre
         )
       `);
 
@@ -393,11 +393,11 @@ export default function Seccion1() {
     fetchData();
   }, []);
 
-  const activeItems = items.filter((i) => i.sc1UsarStorage === true);
-  const inactiveItems = items.filter((i) => i.sc1UsarStorage === false);
+  const activeItems = items.filter((i) => i.sc1usarstorage === true);
+  const inactiveItems = items.filter((i) => i.sc1usarstorage === false);
 
   const allBucketNames = items
-    .map((i) => i.banner?.bannerBucketNombre ? stripExtension(i.banner.bannerBucketNombre) : null)
+    .map((i) => i.banner?.bannerbucketnombre ? stripExtension(i.banner.bannerbucketnombre) : null)
     .filter(Boolean) as string[];
 
   return (
