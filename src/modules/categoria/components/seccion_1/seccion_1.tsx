@@ -118,5 +118,5 @@ const [productos, setProductos] = useState<Producto[]>([]);
     
   );
 };
-
+  
 export default Seccion_1;

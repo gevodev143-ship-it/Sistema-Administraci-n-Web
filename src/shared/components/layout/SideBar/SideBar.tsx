@@ -39,6 +39,12 @@ const Sidebar = ({ setView }: SidebarProps) => {
       >
         Testimonios
       </div>
+            <div 
+      className={styles.item}
+        onClick={() => navigate("/historialReclamosferreteria")}
+      >
+        Historial de Reclamos
+      </div>
 
       
     </div>

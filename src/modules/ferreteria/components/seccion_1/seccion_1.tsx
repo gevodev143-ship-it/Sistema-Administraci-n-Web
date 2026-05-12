@@ -19,7 +19,7 @@ const Seccion_1 = ({ vista }) => {
     <div className={styles.seccion}>
       <div style={{ overflow: "auto" }}>
         <iframe
-          src="https://pruebaindex1.vercel.app/"
+          src="https://ferreteriagorrioncito-one.vercel.app/"
           style={{
             width: width,
             height: height,
